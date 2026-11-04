@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="expense_add">Add expense</string>
+    <string name="expense_edit">Edit expense</string>
+    <string name="expense_title">What was it for? (e.g. Shop rent)</string>
+    <string name="expense_amount">Amount</string>
+    <string name="expense_category">Category</string>
+    <string name="expense_method">Paid by</string>
+    <string name="expense_date">Date</string>
+    <string name="expense_note">Note (optional)</string>
+    <string name="expense_not_found">This expense no longer exists.</string>
+    <string name="expense_delete_title">Delete this expense?</string>
+    <string name="expense_delete_body">The amount will be added back to your profit and cash balance. This cannot be undone.</string>
+    <string name="expenses_total">Total expenses</string>
+    <string name="expenses_empty">No expenses in this period. Tap + to add one.</string>
+
+    <string name="expense_cat_rent">Rent</string>
+    <string name="expense_cat_salary">Salary</string>
+    <string name="expense_cat_electricity">Electricity and bills</string>
+    <string name="expense_cat_transport">Transport</string>
+    <string name="expense_cat_food">Food and tea</string>
+    <string name="expense_cat_maintenance">Repair and maintenance</string>
+    <string name="expense_cat_marketing">Marketing</string>
+    <string name="expense_cat_other">Other</string>
+</resources>

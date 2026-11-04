@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.burhannexus.dukaandost.ui.business.BusinessProfileScreen
 import com.burhannexus.dukaandost.ui.common.ModuleNotBuiltScreen
 import com.burhannexus.dukaandost.ui.dashboard.DashboardScreen
+import com.burhannexus.dukaandost.ui.expenses.ExpensesScreen
 import com.burhannexus.dukaandost.ui.products.ProductDetailScreen
 import com.burhannexus.dukaandost.ui.products.ProductEditScreen
 import com.burhannexus.dukaandost.ui.products.ProductsScreen
@@ -46,6 +47,7 @@ fun AppNavHost(
         AppDestination.Customers,
         AppDestination.Suppliers,
         AppDestination.Ledger,
+        AppDestination.Expenses,
         AppDestination.Settings
     )
     val openLedger: (PartyKind, Long) -> Unit = { kind, id ->
@@ -165,6 +167,8 @@ fun AppNavHost(
         ) {
             ReturnScreen(contentPadding = contentPadding, onDone = { navController.popBackStack() })
         }
+
+        composable(AppDestination.Expenses.route) { ExpensesScreen(contentPadding) }
 
         composable(AppDestination.Settings.route) {
             SettingsScreen(

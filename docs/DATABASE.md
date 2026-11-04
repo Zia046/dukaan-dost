@@ -1,4 +1,4 @@
-# Database (Room / SQLite) - schema version 4
+# Database (Room / SQLite) - schema version 5
 
 File: `dukaan_dost.db`, local to each installation. Foreign keys are enforced.
 
@@ -33,3 +33,10 @@ Migration 2 -> 3 only creates tables.
 
 ## Version 4 tables (payments on account)
 customer_payments and supplier_payments (number unique, amount, method, note). Migration 3 -> 4 only creates tables.
+
+## Version 5 tables (expenses)
+| Table | Purpose |
+|---|---|
+| expenses | title, category (enum name), amountMinor (paisa), paymentMethod, note, `spentAt` (start of the expense day, epoch ms), `createdAt`; index on `spentAt` |
+
+Migration 4 -> 5 only creates the table. An expense can be deleted by the user (confirmation required); unlike invoices it has no dependants.

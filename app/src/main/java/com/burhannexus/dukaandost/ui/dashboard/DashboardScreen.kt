@@ -278,7 +278,7 @@ private fun RecentCard(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CustomRangeDialog(
+internal fun CustomRangeDialog(
     onDismiss: () -> Unit,
     onConfirm: (LocalDate, LocalDate) -> Unit
 ) {

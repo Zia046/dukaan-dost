@@ -15,7 +15,7 @@ Zero or negative existing stock counts as no value.
 ## Dashboard definitions
 - Sales / Profit: selected date range. Receivables, payables, stock: current totals.
 - Receivables = sum(total - paid) over sales. Payables = sum(total - paid) over purchases.
-- Cash balance = money received from sales - money paid for purchases (expenses and opening cash come later).
+- Cash balance = money received from sales - money paid for purchases - expenses (opening cash comes later).
 - Revenue, cash received, credit given and credit taken are kept separate in the data.
 
 ## Returns (Phase 3, part 2)
@@ -38,4 +38,10 @@ Zero or negative existing stock counts as no value.
   cash balance also adds payments received and subtracts payments made.
 
 ## Not yet included
-Expenses, opening cash balance, payment allocation to individual invoices.
+Opening cash balance, payment allocation to individual invoices.
+
+## Expenses (Phase 5)
+- An expense is a running cost of the shop (rent, salary, bills ...). It is NOT part of the cost of goods sold.
+- Net profit (dashboard) = gross profit (sales - COGS, net of returns) - expenses dated inside the selected range.
+- The Expenses card shows the expenses of the selected range. Cash balance subtracts ALL expenses, whatever their date.
+- Expenses are grouped by a fixed category list so Reports can total them reliably.

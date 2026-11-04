@@ -6,6 +6,7 @@ import androidx.room.migration.Migration
 import com.burhannexus.dukaandost.data.local.dao.CategoryDao
 import com.burhannexus.dukaandost.data.local.dao.CustomerDao
 import com.burhannexus.dukaandost.data.local.dao.CustomerPaymentDao
+import com.burhannexus.dukaandost.data.local.dao.ExpenseDao
 import com.burhannexus.dukaandost.data.local.dao.SupplierPaymentDao
 import com.burhannexus.dukaandost.data.local.dao.ProductDao
 import com.burhannexus.dukaandost.data.local.dao.PurchaseReturnDao
@@ -17,6 +18,7 @@ import com.burhannexus.dukaandost.data.local.dao.SupplierDao
 import com.burhannexus.dukaandost.data.local.entity.CategoryEntity
 import com.burhannexus.dukaandost.data.local.entity.CustomerEntity
 import com.burhannexus.dukaandost.data.local.entity.CustomerPaymentEntity
+import com.burhannexus.dukaandost.data.local.entity.ExpenseEntity
 import com.burhannexus.dukaandost.data.local.entity.SupplierPaymentEntity
 import com.burhannexus.dukaandost.data.local.entity.ProductEntity
 import com.burhannexus.dukaandost.data.local.entity.PurchaseEntity
@@ -44,9 +46,10 @@ import com.burhannexus.dukaandost.data.local.entity.SupplierEntity
         SaleEntity::class, SaleItemEntity::class,
         SaleReturnEntity::class, SaleReturnItemEntity::class,
         PurchaseReturnEntity::class, PurchaseReturnItemEntity::class,
-        CustomerPaymentEntity::class, SupplierPaymentEntity::class
+        CustomerPaymentEntity::class, SupplierPaymentEntity::class,
+        ExpenseEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -61,8 +64,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun purchaseReturnDao(): PurchaseReturnDao
     abstract fun customerPaymentDao(): CustomerPaymentDao
     abstract fun supplierPaymentDao(): SupplierPaymentDao
+    abstract fun expenseDao(): ExpenseDao
 
     companion object {
-        val MIGRATIONS: Array<Migration> = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+        val MIGRATIONS: Array<Migration> = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
     }
 }

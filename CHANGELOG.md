@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0 - Phase 5: Expenses
+- Expenses menu is now a real screen: add, edit and delete shop expenses
+- Fields: what it was for, amount, category (rent, salary, electricity and bills, transport, food and tea, repair, marketing, other), paid by cash/bank/wallet, date, note
+- Filter by Today, Yesterday, This week, This month, This year or a custom range; total for the period
+- Dashboard: Expenses card now shows real figures; the profit card is NET profit (gross profit minus expenses of the period)
+- Dashboard cash balance now also subtracts expenses
+- Database v5 with migration 4 -> 5 (expenses table). Existing data is untouched
+- Unit tests: expense validation
+
 ## 0.4.0 - Phase 4: Customers, Suppliers, Ledger
 - New menu entries: Return items, Customers, Suppliers, Ledger
 - Return items menu: all sales and purchase returns in one list, start a new return against any invoice

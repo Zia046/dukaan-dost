@@ -143,3 +143,16 @@ val MIGRATION_3_4: Migration = object : Migration(3, 4) {
         db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_supplier_payments_number` ON `supplier_payments` (`number`)")
     }
 }
+
+/** v4 -> v5 (Phase 5): shop expenses. Existing data is untouched. */
+val MIGRATION_4_5: Migration = object : Migration(4, 5) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `expenses` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                "`title` TEXT NOT NULL, `category` TEXT NOT NULL, `amountMinor` INTEGER NOT NULL, " +
+                "`paymentMethod` TEXT NOT NULL, `note` TEXT NOT NULL, `spentAt` INTEGER NOT NULL, " +
+                "`createdAt` INTEGER NOT NULL)"
+        )
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_expenses_spentAt` ON `expenses` (`spentAt`)")
+    }
+}
