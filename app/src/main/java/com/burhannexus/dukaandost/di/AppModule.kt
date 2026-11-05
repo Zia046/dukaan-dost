@@ -33,6 +33,10 @@ abstract class AppModule {
 
     @Binds
     @Singleton
+    abstract fun bindSecretCodeRepository(impl: com.burhannexus.dukaandost.data.repository.SecretCodeRepositoryImpl): com.burhannexus.dukaandost.domain.repository.SecretCodeRepository
+
+    @Binds
+    @Singleton
     abstract fun bindProductRepository(impl: ProductRepositoryImpl): ProductRepository
 
     @Binds

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.0 - Secret Code (price decoder)
+- The "Secret Code" menu now holds the Burhan Nexus price decoder: Code -> Price and Price -> Code
+- The letter for each digit can be changed (one letter per digit, no repeats); it is saved on the phone. Default code: AEIOUSBLWP
+- Fixed footer "Developed by Burhan Nexus" with the phone number, which cannot be edited
+- Shop name, address and logo are not copied from the old app: Dukaan Dost already has them in Settings
+- Unit tests for the code logic
+
 ## 0.7.0 - Barcode scanning and printing
 - Sale invoice: new "Scan barcode" button next to "Search products". The phone camera scans and the product is added to the invoice straight away; the camera stays open for the next item, with a beep and a message for each scan
 - A product that is not found, or has no stock, is reported on the scan screen instead of being added
