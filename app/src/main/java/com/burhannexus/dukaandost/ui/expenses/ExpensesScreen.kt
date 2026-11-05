@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -53,6 +52,7 @@ import com.burhannexus.dukaandost.domain.model.Expense
 import com.burhannexus.dukaandost.domain.model.ExpenseInput
 import com.burhannexus.dukaandost.domain.model.ExpenseSaveResult
 import com.burhannexus.dukaandost.domain.model.PaymentMethod
+import com.burhannexus.dukaandost.ui.components.PeriodFilterRow
 import com.burhannexus.dukaandost.ui.dashboard.CustomRangeDialog
 import com.burhannexus.dukaandost.ui.products.FormError
 import com.burhannexus.dukaandost.ui.trade.DecimalField
@@ -63,16 +63,6 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 private val DateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
-
-@StringRes
-private fun DashboardPeriod.periodLabelRes(): Int = when (this) {
-    DashboardPeriod.TODAY -> R.string.period_today
-    DashboardPeriod.YESTERDAY -> R.string.period_yesterday
-    DashboardPeriod.THIS_WEEK -> R.string.period_this_week
-    DashboardPeriod.THIS_MONTH -> R.string.period_this_month
-    DashboardPeriod.THIS_YEAR -> R.string.period_this_year
-    DashboardPeriod.CUSTOM -> R.string.period_custom
-}
 
 @StringRes
 private fun FormError.messageRes(): Int = when (this) {
@@ -113,18 +103,13 @@ fun ExpensesScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             item {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(DashboardPeriod.entries.toList()) { period ->
-                        FilterChip(
-                            selected = state.filter.period == period,
-                            onClick = {
-                                if (period == DashboardPeriod.CUSTOM) showCustomDialog = true
-                                else viewModel.selectPeriod(period)
-                            },
-                            label = { Text(stringResource(period.periodLabelRes())) }
-                        )
+                PeriodFilterRow(
+                    selected = state.filter.period,
+                    onSelect = { period ->
+                        if (period == DashboardPeriod.CUSTOM) showCustomDialog = true
+                        else viewModel.selectPeriod(period)
                     }
-                }
+                )
             }
             item {
                 Text(

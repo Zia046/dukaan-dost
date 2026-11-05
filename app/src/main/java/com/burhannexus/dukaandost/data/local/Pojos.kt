@@ -77,3 +77,22 @@ data class ReturnListRow(
     val invoiceNumber: Long,
     val partyName: String?
 )
+
+/** One sale (or sales return) reduced to the figures reports need. */
+data class MoneyPoint(
+    val createdAt: Long,
+    val totalMinor: Long,
+    val cogsMinor: Long
+)
+
+data class SoldProductRow(
+    val productId: Long,
+    val productName: String,
+    val quantityMilli: Long,
+    val salesMinor: Long
+)
+
+data class ReturnedProductRow(
+    val productId: Long,
+    val quantityMilli: Long
+)

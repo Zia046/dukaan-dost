@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0 - Phase 5: Reports
+- Reports menu is now a real screen (it was empty)
+- Period filter: Today, Yesterday, This week, This month, This year or a custom range
+- Summary: invoices, sales (after discounts and returns), returns, gross profit, expenses, net profit - same definitions as the dashboard
+- Bar chart of sales and expenses: one bar pair per day (up to 31 days) or per month, with a table of the active days/months
+- Expenses by category with share of the total
+- Best selling products (top 5 by item sales, quantity net of returns)
+- Expenses and Reports share one period filter
+- No database change (still version 5). Unit tests for the report calculations
+
 ## 0.5.0 - Phase 5: Expenses
 - Expenses menu is now a real screen: add, edit and delete shop expenses
 - Fields: what it was for, amount, category (rent, salary, electricity and bills, transport, food and tea, repair, marketing, other), paid by cash/bank/wallet, date, note

@@ -7,6 +7,7 @@ import com.burhannexus.dukaandost.data.local.dao.CategoryDao
 import com.burhannexus.dukaandost.data.local.dao.CustomerDao
 import com.burhannexus.dukaandost.data.local.dao.CustomerPaymentDao
 import com.burhannexus.dukaandost.data.local.dao.ExpenseDao
+import com.burhannexus.dukaandost.data.local.dao.ReportDao
 import com.burhannexus.dukaandost.data.local.dao.SupplierPaymentDao
 import com.burhannexus.dukaandost.data.local.dao.ProductDao
 import com.burhannexus.dukaandost.data.local.dao.PurchaseReturnDao
@@ -65,6 +66,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun customerPaymentDao(): CustomerPaymentDao
     abstract fun supplierPaymentDao(): SupplierPaymentDao
     abstract fun expenseDao(): ExpenseDao
+    abstract fun reportDao(): ReportDao
 
     companion object {
         val MIGRATIONS: Array<Migration> = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)

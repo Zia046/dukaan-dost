@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="report_summary">Summary</string>
+    <string name="report_invoices">Invoices</string>
+    <string name="report_sales">Sales</string>
+    <string name="report_returns">Returns (already deducted)</string>
+    <string name="report_gross_profit">Gross profit</string>
+    <string name="report_expenses">Expenses</string>
+    <string name="report_net_profit">Net profit</string>
+    <string name="report_trend_title">Sales and expenses</string>
+    <string name="report_chart_description">Bar chart of sales and expenses for the selected period</string>
+    <string name="report_no_activity">No sales or expenses in this period.</string>
+    <string name="report_expense_categories">Expenses by category</string>
+    <string name="report_no_expenses">No expenses in this period.</string>
+    <string name="report_top_products">Best selling products</string>
+    <string name="report_no_sales">No sales in this period.</string>
+    <string name="report_qty_sold">%1$s sold</string>
+    <string name="report_percent">%1$d%%</string>
+    <string name="report_footnote">Sales are after discounts and returns. Net profit = sales - cost of goods - expenses. Product amounts are before invoice discount and returns.</string>
+</resources>

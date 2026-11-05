@@ -45,3 +45,10 @@ Opening cash balance, payment allocation to individual invoices.
 - Net profit (dashboard) = gross profit (sales - COGS, net of returns) - expenses dated inside the selected range.
 - The Expenses card shows the expenses of the selected range. Cash balance subtracts ALL expenses, whatever their date.
 - Expenses are grouped by a fixed category list so Reports can total them reliably.
+
+## Reports (Phase 5)
+- Same definitions as the dashboard: sales = invoices after discounts minus sales returns of the period;
+  gross profit = sales - cost of goods (returned goods give their cost back); net profit = gross profit - expenses.
+- A sale or return belongs to the day it was made (device time zone), an expense to the date chosen on it.
+- Ranges up to 31 days are shown per day, longer ones per month.
+- Best selling products: ranked by item sales amount (before the invoice discount and returns); the quantity is reduced by what was returned in the same period.

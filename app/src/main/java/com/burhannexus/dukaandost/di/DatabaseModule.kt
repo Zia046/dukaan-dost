@@ -7,6 +7,7 @@ import com.burhannexus.dukaandost.data.local.dao.CategoryDao
 import com.burhannexus.dukaandost.data.local.dao.CustomerDao
 import com.burhannexus.dukaandost.data.local.dao.CustomerPaymentDao
 import com.burhannexus.dukaandost.data.local.dao.ExpenseDao
+import com.burhannexus.dukaandost.data.local.dao.ReportDao
 import com.burhannexus.dukaandost.data.local.dao.SupplierPaymentDao
 import com.burhannexus.dukaandost.data.local.dao.ProductDao
 import com.burhannexus.dukaandost.data.local.dao.PurchaseDao
@@ -68,4 +69,7 @@ object DatabaseModule {
 
     @Provides
     fun provideExpenseDao(db: AppDatabase): ExpenseDao = db.expenseDao()
+
+    @Provides
+    fun provideReportDao(db: AppDatabase): ReportDao = db.reportDao()
 }
