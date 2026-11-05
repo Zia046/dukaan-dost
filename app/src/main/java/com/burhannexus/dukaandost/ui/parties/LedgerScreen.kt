@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Print
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Sms
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -85,6 +86,7 @@ private fun LedgerContent(found: LedgerState.Found, contentPadding: PaddingValue
     val scope = rememberCoroutineScope()
     var busy by remember { mutableStateOf(false) }
     var showPayment by remember { mutableStateOf(false) }
+    var showReminder by remember { mutableStateOf(false) }
 
     // Rows and labels for the PDF are built here, in the user's language.
     val rows = ledger.entries.map { entry ->
@@ -163,6 +165,14 @@ private fun LedgerContent(found: LedgerState.Found, contentPadding: PaddingValue
                 Text(stringResource(if (kind == PartyKind.CUSTOMER) R.string.payment_receive else R.string.payment_make))
             }
         }
+        if (kind == PartyKind.CUSTOMER && canRemind(account.phone, account.balance)) {
+            item {
+                OutlinedButton(onClick = { showReminder = true }, modifier = Modifier.fillMaxWidth()) {
+                    Icon(Icons.Filled.Sms, contentDescription = null)
+                    Text(stringResource(R.string.reminder_button), modifier = Modifier.padding(start = 8.dp))
+                }
+            }
+        }
         item {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
                 OutlinedButton(
@@ -200,6 +210,15 @@ private fun LedgerContent(found: LedgerState.Found, contentPadding: PaddingValue
                 LedgerRow(kind, entry)
             }
         }
+    }
+
+    if (showReminder) {
+        ReminderDialog(
+            name = account.name,
+            phone = account.phone.orEmpty(),
+            balance = account.balance,
+            onDismiss = { showReminder = false }
+        )
     }
 
     if (showPayment) {

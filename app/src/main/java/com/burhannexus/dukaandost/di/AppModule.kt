@@ -37,6 +37,10 @@ abstract class AppModule {
 
     @Binds
     @Singleton
+    abstract fun bindSmsTemplateRepository(impl: com.burhannexus.dukaandost.data.repository.SmsTemplateRepositoryImpl): com.burhannexus.dukaandost.domain.repository.SmsTemplateRepository
+
+    @Binds
+    @Singleton
     abstract fun bindProductRepository(impl: ProductRepositoryImpl): ProductRepository
 
     @Binds

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder_button">Send reminder SMS</string>
+    <string name="reminder_title">Reminder for %1$s</string>
+    <string name="reminder_to">SMS will be sent to %1$s</string>
+    <string name="reminder_send">Send SMS</string>
+    <string name="reminder_edit">Edit message</string>
+    <string name="reminder_template">Message text</string>
+    <string name="reminder_token_hint">%1$s is replaced by the customer\'s balance when sending.</string>
+    <string name="reminder_token_missing">The text must contain %1$s so the balance can be filled in.</string>
+    <string name="reminder_reset">Use the standard message</string>
+    <string name="reminder_sent">SMS sent to %1$s.</string>
+    <string name="reminder_failed">The SMS could not be sent. Check the phone number and SIM.</string>
+    <string name="reminder_permission_denied">SMS permission is needed to send the reminder.</string>
+</resources>

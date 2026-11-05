@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Sms
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -51,7 +52,8 @@ fun PartyAccountCard(
     account: PartyAccount,
     kind: PartyKind,
     onClick: () -> Unit,
-    onEdit: (() -> Unit)? = null
+    onEdit: (() -> Unit)? = null,
+    onRemind: (() -> Unit)? = null
 ) {
     Card(
         onClick = onClick,
@@ -73,6 +75,11 @@ fun PartyAccountCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = balanceColor(kind, account.balance)
                 )
+            }
+            if (onRemind != null) {
+                IconButton(onClick = onRemind) {
+                    Icon(Icons.Filled.Sms, contentDescription = stringResource(R.string.reminder_button))
+                }
             }
             if (onEdit != null) {
                 IconButton(onClick = onEdit) {

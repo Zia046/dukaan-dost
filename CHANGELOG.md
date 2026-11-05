@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.0 - Payment reminder SMS
+- Ledger: a customer who owes money and has a phone number gets a "Send reminder SMS" button, both on the customer's ledger page and in the Ledger list
+- Tapping it shows the full Urdu message with the customer's balance filled in; one confirmation (Send SMS) sends it straight from the phone, without opening the messages app. Long Urdu text is split into parts automatically
+- "Edit message" changes the message text for next time ({amount} is replaced by the balance); "Use the standard message" restores your original text
+- Needs the SMS permission (asked on first send). Standard SMS charges of the SIM apply. No database change
+- Unit tests for the message and amount formatting
+
 ## 0.8.0 - Secret Code (price decoder)
 - The "Secret Code" menu now holds the Burhan Nexus price decoder: Code -> Price and Price -> Code
 - The letter for each digit can be changed (one letter per digit, no repeats); it is saved on the phone. Default code: AEIOUSBLWP

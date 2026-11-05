@@ -29,6 +29,7 @@ fun LedgerHomeScreen(
         viewModel.start(kind)
     }
     val accounts by viewModel.accounts.collectAsStateWithLifecycle()
+    var reminderFor by remember { mutableStateOf<com.burhannexus.dukaandost.domain.model.PartyAccount?>(null) }
 
     LazyColumn(
         modifier = Modifier
@@ -74,8 +75,24 @@ fun LedgerHomeScreen(
             }
         } else {
             items(accounts, key = { it.id }) { account ->
-                PartyAccountCard(account = account, kind = kind, onClick = { onOpenLedger(kind, account.id) })
+                PartyAccountCard(
+                    account = account,
+                    kind = kind,
+                    onClick = { onOpenLedger(kind, account.id) },
+                    onRemind = if (kind == PartyKind.CUSTOMER && canRemind(account.phone, account.balance)) {
+                        { reminderFor = account }
+                    } else null
+                )
             }
         }
+    }
+
+    reminderFor?.let { account ->
+        ReminderDialog(
+            name = account.name,
+            phone = account.phone.orEmpty(),
+            balance = account.balance,
+            onDismiss = { reminderFor = null }
+        )
     }
 }
