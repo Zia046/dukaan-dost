@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.0 - Barcode scanning and printing
+- Sale invoice: new "Scan barcode" button next to "Search products". The phone camera scans and the product is added to the invoice straight away; the camera stays open for the next item, with a beep and a message for each scan
+- A product that is not found, or has no stock, is reported on the scan screen instead of being added
+- Product form: "Scan barcode with camera" fills the barcode field
+- Product details: "Print barcodes" asks how many barcodes are needed and makes an A4 PDF with 65 small labels per page (5 x 13), each with the product name, the barcode and its number. Share it or print it directly. Cut lines can be switched off
+- Retail codes (EAN-13, EAN-8, UPC-A) are printed in their own symbology and other codes (such as a phone IMEI) as Code 128. A product without a barcode gets a shop EAN-13 (prefix 2, reserved for in-store use) that is saved on the product
+- Scanning also finds a product saved as UPC-A when the camera reads it as EAN-13, and the other way round
+- Needs the camera permission (asked on first use); everything else works without it. No database change (still version 5)
+- Unit tests for barcode rules and the label sheet layout
+
 ## 0.6.0 - Phase 5: Reports
 - Reports menu is now a real screen (it was empty)
 - Period filter: Today, Yesterday, This week, This month, This year or a custom range

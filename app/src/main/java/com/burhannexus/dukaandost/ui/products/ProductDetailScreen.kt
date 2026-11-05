@@ -64,6 +64,7 @@ fun ProductDetailScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val movements by viewModel.movements.collectAsStateWithLifecycle()
     var confirmDelete by remember { mutableStateOf(false) }
+    var showBarcodes by remember { mutableStateOf(false) }
 
     when (val current = state) {
         DetailState.Loading -> Box(
@@ -81,8 +82,16 @@ fun ProductDetailScreen(
                 movements = movements,
                 contentPadding = contentPadding,
                 onEdit = { onEdit(product.id) },
-                onDelete = { confirmDelete = true }
+                onDelete = { confirmDelete = true },
+                onPrintBarcodes = { showBarcodes = true }
             )
+            if (showBarcodes) {
+                BarcodeLabelsDialog(
+                    product = product,
+                    onCreate = viewModel::createBarcodePdf,
+                    onDismiss = { showBarcodes = false }
+                )
+            }
             if (confirmDelete) {
                 AlertDialog(
                     onDismissRequest = { confirmDelete = false },
@@ -109,7 +118,8 @@ private fun DetailContent(
     movements: List<StockMovement>,
     contentPadding: PaddingValues,
     onEdit: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    onPrintBarcodes: () -> Unit
 ) {
     val notSet = stringResource(R.string.not_set)
     LazyColumn(
@@ -159,6 +169,11 @@ private fun DetailContent(
                 if (product.description.isNotEmpty()) {
                     InfoRow(stringResource(R.string.detail_description), product.description)
                 }
+            }
+        }
+        item {
+            OutlinedButton(onClick = onPrintBarcodes, modifier = Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.barcode_print_button))
             }
         }
         item {

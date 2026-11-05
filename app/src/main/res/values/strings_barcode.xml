@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Scanner -->
+    <string name="scan_permission_needed">The camera is needed to scan barcodes. You can still search products by name.</string>
+    <string name="scan_allow_camera">Allow camera</string>
+    <string name="scan_open_settings">Open app settings</string>
+    <string name="scan_done">Done</string>
+    <string name="scan_not_found">No product has the barcode %1$s.</string>
+    <string name="scan_added">Added: %1$s (quantity %2$s)</string>
+
+    <!-- Sale invoice -->
+    <string name="pos_scan_barcode">Scan barcode</string>
+    <string name="pos_search_product">Search products</string>
+    <string name="pos_scan_title">Scan products</string>
+    <string name="pos_scan_hint">Point the camera at a barcode and the product is added to the invoice. For another unit of the same product, look away for a moment and scan again.</string>
+
+    <!-- Product form -->
+    <string name="product_scan_title">Scan barcode</string>
+    <string name="product_scan_hint">Point the camera at the barcode on the product.</string>
+    <string name="product_scan_barcode">Scan barcode with camera</string>
+
+    <!-- Printing barcodes -->
+    <string name="barcode_print_button">Print barcodes</string>
+    <string name="barcode_dialog_title">Print barcodes</string>
+    <string name="barcode_copies">How many barcodes do you want?</string>
+    <string name="barcode_cut_lines">Draw cut lines</string>
+    <string name="barcode_pages_info">%1$d barcodes = %2$d A4 page(s), %3$d barcodes on each page.</string>
+    <string name="barcode_new_note">This product has no barcode yet. A shop barcode (EAN-13) will be created and saved on the product.</string>
+    <string name="barcode_existing_note">Barcode number: %1$s</string>
+    <string name="barcode_share">Share PDF</string>
+    <string name="barcode_print">Print</string>
+    <string name="barcode_err_copies">Enter a number from 1 to %1$d.</string>
+    <string name="barcode_err_failed">The barcode PDF could not be created.</string>
+</resources>

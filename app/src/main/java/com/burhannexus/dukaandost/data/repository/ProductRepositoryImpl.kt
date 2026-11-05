@@ -1,6 +1,7 @@
 package com.burhannexus.dukaandost.data.repository
 
 import androidx.room.withTransaction
+import com.burhannexus.dukaandost.core.Barcodes
 import com.burhannexus.dukaandost.core.Minor
 import com.burhannexus.dukaandost.data.local.AppDatabase
 import com.burhannexus.dukaandost.data.local.dao.ProductDao
@@ -34,6 +35,30 @@ class ProductRepositoryImpl @Inject constructor(
         productDao.observeById(id).map { it?.toDomain() }
 
     override suspend fun getProduct(id: Long): Product? = productDao.getById(id)?.toDomain()
+
+    override suspend fun findByBarcode(scanned: String): Product? {
+        val codes = Barcodes.lookupCandidates(scanned)
+        if (codes.isEmpty()) return null
+        return productDao.findByBarcodes(codes)?.toDomain()
+    }
+
+    override suspend fun ensureBarcode(productId: Long): String? = db.withTransaction {
+        val entity = productDao.getEntity(productId)
+        if (entity == null || !entity.isActive) return@withTransaction null
+        entity.barcode?.takeIf { it.isNotBlank() }?.let { return@withTransaction it }
+
+        // The product id makes the number unique; step further only if someone typed the same number by hand.
+        var serial = productId
+        repeat(MAX_BARCODE_TRIES) {
+            val candidate = Barcodes.internalEan13(serial)
+            if (productDao.countBarcode(candidate, productId) == 0) {
+                productDao.update(entity.copy(barcode = candidate, updatedAt = System.currentTimeMillis()))
+                return@withTransaction candidate
+            }
+            serial += BARCODE_SERIAL_STEP
+        }
+        null
+    }
 
     override fun observeMovements(productId: Long): Flow<List<StockMovement>> =
         movementDao.observeForProduct(productId).map { list -> list.map { it.toDomain() } }
@@ -126,3 +151,6 @@ class ProductRepositoryImpl @Inject constructor(
     private fun escapeLike(text: String): String =
         text.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
 }
+
+private const val MAX_BARCODE_TRIES = 20
+private const val BARCODE_SERIAL_STEP = 1_000_000L

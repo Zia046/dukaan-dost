@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.burhannexus.dukaandost.R
+import com.burhannexus.dukaandost.ui.scanner.BarcodeScanDialog
 import java.time.Instant
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -68,6 +69,7 @@ fun ProductEditScreen(
     val categories by viewModel.categories.collectAsStateWithLifecycle()
     val loadState by viewModel.loadState.collectAsStateWithLifecycle()
     var showDatePicker by remember { mutableStateOf(false) }
+    var showScanner by remember { mutableStateOf(false) }
 
     when (loadState) {
         LoadState.LOADING -> {
@@ -186,6 +188,7 @@ fun ProductEditScreen(
             label = stringResource(R.string.field_barcode),
             error = form.errors[FormField.BARCODE]
         )
+        TextButton(onClick = { showScanner = true }) { Text(stringResource(R.string.product_scan_barcode)) }
         FormTextField(
             value = form.description,
             onValueChange = { v -> viewModel.edit(FormField.DESCRIPTION) { copy(description = v) } },
@@ -230,6 +233,21 @@ fun ProductEditScreen(
                 modifier = Modifier.weight(1f)
             ) { Text(stringResource(R.string.save)) }
         }
+    }
+
+    if (showScanner) {
+        BarcodeScanDialog(
+            title = stringResource(R.string.product_scan_title),
+            hint = stringResource(R.string.product_scan_hint),
+            feedbackKey = 0L,
+            feedbackText = null,
+            feedbackIsError = false,
+            onBarcode = { code ->
+                viewModel.edit(FormField.BARCODE) { copy(barcode = code) }
+                showScanner = false
+            },
+            onDismiss = { showScanner = false }
+        )
     }
 
     if (showDatePicker) {

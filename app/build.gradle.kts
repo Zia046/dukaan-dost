@@ -13,8 +13,8 @@ android {
         applicationId = "com.burhannexus.dukaandost"
         minSdk = 26
         targetSdk = 34
-        versionCode = 8
-        versionName = "0.6.0"
+        versionCode = 9
+        versionName = "0.7.0"
     }
 
     buildTypes {
@@ -78,6 +78,14 @@ dependencies {
     kapt(libs.room.compiler)
 
     implementation(libs.kotlinx.coroutines.android)
+
+    // Barcode scanning (camera + on-device ML Kit, works offline) and barcode drawing for printable labels
+    implementation(libs.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
+    implementation(libs.mlkit.barcode.scanning)
+    implementation(libs.zxing.core)
 
     testImplementation(libs.junit)
 }

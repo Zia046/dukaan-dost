@@ -1,5 +1,6 @@
 package com.burhannexus.dukaandost.ui.trade
 
+import android.os.SystemClock
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.burhannexus.dukaandost.R
@@ -14,6 +15,7 @@ import com.burhannexus.dukaandost.domain.model.SaleInput
 import com.burhannexus.dukaandost.domain.model.SaleLineInput
 import com.burhannexus.dukaandost.domain.model.SaleResult
 import com.burhannexus.dukaandost.domain.repository.PartyRepository
+import com.burhannexus.dukaandost.domain.repository.ProductRepository
 import com.burhannexus.dukaandost.domain.repository.SalesRepository
 import com.burhannexus.dukaandost.ui.products.ProductValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,6 +37,9 @@ data class SaleLine(val product: Product, val quantity: BigDecimal, val discount
 }
 
 data class CompletedSale(val id: Long, val number: Long)
+
+/** What the scan screen shows after a barcode was read. [id] changes for every result so the beep plays each time. */
+data class ScanFeedback(val id: Long, val text: UiText, val success: Boolean)
 
 data class PosUiState(
     val lines: List<SaleLine> = emptyList(),
@@ -59,7 +64,8 @@ data class PosUiState(
 @HiltViewModel
 class PosViewModel @Inject constructor(
     private val sales: SalesRepository,
-    private val parties: PartyRepository
+    private val parties: PartyRepository,
+    private val products: ProductRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(PosUiState())
@@ -78,16 +84,17 @@ class PosViewModel @Inject constructor(
         _state.update { block(it).recomputed() }
     }
 
-    fun addProduct(product: Product) {
+    /** Adds one unit to the invoice. Returns false (with a message) when there is no stock for it. */
+    fun addProduct(product: Product): Boolean {
         val current = _state.value.lines.firstOrNull { it.product.id == product.id }
         if (product.stock.signum() <= 0) {
             change { it.copy(message = UiText(R.string.pos_err_out_of_stock, listOf(product.name))) }
-            return
+            return false
         }
         val newQuantity = if (current == null) BigDecimal.ONE.min(product.stock) else current.quantity.add(BigDecimal.ONE)
         if (newQuantity > product.stock) {
             change { it.copy(message = onlyInStock(product)) }
-            return
+            return false
         }
         change { state ->
             val lines = if (current == null) {
@@ -97,6 +104,50 @@ class PosViewModel @Inject constructor(
             }
             state.copy(lines = lines, message = null)
         }
+        return true
+    }
+
+    private val _scanFeedback = MutableStateFlow<ScanFeedback?>(null)
+    val scanFeedback: StateFlow<ScanFeedback?> = _scanFeedback.asStateFlow()
+    private var feedbackCounter = 0L
+    private var lastScanned: String? = null
+    private var lastSeenAt = 0L
+
+    /**
+     * Called for every camera frame that contains a barcode. A code that stays in view is added once;
+     * to add another unit the camera must look away for a moment (or show a different code) first.
+     */
+    fun onBarcodeScanned(raw: String) {
+        val code = raw.trim()
+        if (code.isEmpty()) return
+        val now = SystemClock.elapsedRealtime()
+        val repeated = code == lastScanned && now - lastSeenAt < SAME_CODE_GAP_MS
+        lastScanned = code
+        lastSeenAt = now
+        if (repeated) return
+
+        viewModelScope.launch {
+            val product = products.findByBarcode(code)
+            val feedback = when {
+                product == null -> ScanFeedback(++feedbackCounter, UiText(R.string.scan_not_found, listOf(code)), false)
+                addProduct(product) -> {
+                    val quantity = _state.value.lines.firstOrNull { it.product.id == product.id }?.quantity ?: BigDecimal.ONE
+                    ScanFeedback(++feedbackCounter, UiText(R.string.scan_added, listOf(product.name, Money.formatQuantity(quantity))), true)
+                }
+                else -> {
+                    // addProduct explained why (no stock); show that on the scan screen instead of behind it.
+                    val reason = _state.value.message ?: UiText(R.string.pos_err_out_of_stock, listOf(product.name))
+                    clearMessage()
+                    ScanFeedback(++feedbackCounter, reason, false)
+                }
+            }
+            _scanFeedback.value = feedback
+        }
+    }
+
+    fun clearScanFeedback() {
+        _scanFeedback.value = null
+        lastScanned = null
     }
 
     fun increase(productId: Long) {
@@ -216,6 +267,9 @@ class PosViewModel @Inject constructor(
         return line.discount.min(gross)
     }
 
+    private companion object {
+        const val SAME_CODE_GAP_MS = 1_500L
+    }
 }
 
 private fun PosUiState.recomputed(): PosUiState {

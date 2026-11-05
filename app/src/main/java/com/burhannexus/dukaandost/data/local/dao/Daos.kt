@@ -74,6 +74,13 @@ interface ProductDao {
     @Query("SELECT COUNT(*) FROM products WHERE isActive = 1 AND id != :excludeId AND barcode = :barcode")
     suspend fun countBarcode(barcode: String, excludeId: Long): Int
 
+    @Query(
+        """SELECT p.*, c.name AS categoryName FROM products p
+           LEFT JOIN categories c ON c.id = p.categoryId
+           WHERE p.isActive = 1 AND p.barcode IN (:codes) LIMIT 1"""
+    )
+    suspend fun findByBarcodes(codes: List<String>): ProductWithCategory?
+
     @Query("SELECT COUNT(*) FROM products WHERE isActive = 1 AND id != :excludeId AND sku = :sku")
     suspend fun countSku(sku: String, excludeId: Long): Int
 

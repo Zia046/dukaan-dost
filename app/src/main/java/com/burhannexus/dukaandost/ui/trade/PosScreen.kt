@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -33,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.burhannexus.dukaandost.R
 import com.burhannexus.dukaandost.core.InvoiceNumbers
 import com.burhannexus.dukaandost.core.Money
+import com.burhannexus.dukaandost.ui.scanner.BarcodeScanDialog
 
 @Composable
 fun PosScreen(
@@ -43,6 +45,7 @@ fun PosScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showPicker by remember { mutableStateOf(false) }
+    var showScanner by remember { mutableStateOf(false) }
     var editingId by remember { mutableStateOf<Long?>(null) }
 
     LazyColumn(
@@ -66,9 +69,15 @@ fun PosScreen(
             }
         }
         item {
-            OutlinedButton(onClick = { showPicker = true }, modifier = Modifier.fillMaxWidth()) {
-                Icon(Icons.Filled.Search, contentDescription = null)
-                Text(stringResource(R.string.pos_add_product), modifier = Modifier.padding(start = 8.dp))
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button(onClick = { showScanner = true }, modifier = Modifier.weight(1f)) {
+                    Icon(Icons.Filled.QrCodeScanner, contentDescription = null)
+                    Text(stringResource(R.string.pos_scan_barcode), modifier = Modifier.padding(start = 8.dp))
+                }
+                OutlinedButton(onClick = { showPicker = true }, modifier = Modifier.weight(1f)) {
+                    Icon(Icons.Filled.Search, contentDescription = null)
+                    Text(stringResource(R.string.pos_search_product), modifier = Modifier.padding(start = 8.dp))
+                }
             }
         }
         state.message?.let { message ->
@@ -178,6 +187,22 @@ fun PosScreen(
                 showPicker = false
             },
             onDismiss = { showPicker = false }
+        )
+    }
+
+    if (showScanner) {
+        val feedback by viewModel.scanFeedback.collectAsStateWithLifecycle()
+        BarcodeScanDialog(
+            title = stringResource(R.string.pos_scan_title),
+            hint = stringResource(R.string.pos_scan_hint),
+            feedbackKey = feedback?.id ?: 0L,
+            feedbackText = feedback?.text?.asString(),
+            feedbackIsError = feedback?.success == false,
+            onBarcode = viewModel::onBarcodeScanned,
+            onDismiss = {
+                showScanner = false
+                viewModel.clearScanFeedback()
+            }
         )
     }
 
